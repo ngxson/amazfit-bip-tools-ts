@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "test": "bun run ./src/tests.ts"
   },
   "dependencies": {
   },

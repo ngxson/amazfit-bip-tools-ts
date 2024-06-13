@@ -27,4 +27,20 @@ import { ResAsset, ResFile } from 'amazfit-bip-tools-ts';
 
 ## Bitmap tools
 
-TODO
+```ts
+const res = await ResFile.fromURL('path/to/file.res');
+
+// read bitmap
+const firstAsset = res.assets[0]; // assuming this is the first bitmap
+const bm = new BipBitmap(firstAsset);
+bm.height; // the height
+bm.width; // the width
+
+// save bitmap to BMP file (i.e. can open & edit on MS Paint)
+const fileBMP = bm.toBMP();
+
+// load a BMP file and save it to .res file
+const bm2 = BipBitmap.fromBMP(fileBMP); // assuming fileBMP is uploaded by user
+res.assets[0] = bm2.pack(); // replace the first asset
+const packedRes = res.pack(); // export to new .res file
+```
