@@ -27,13 +27,17 @@ function testBmp() {
     data.push(row);
   }
 
+  // encode pixel array to BMP file
   const bmpFile = makeBitmapFile(
     width,
     height,
     data.map((row) => row.map((c) => c.toIntColor()))
   );
+
+  // try to decode back from BMP
   const bm = BipBitmap.fromBMP(bmpFile);
 
+  // check if the decoded version is the same as original version
   asset(bm.height === height);
   asset(bm.width === width);
   for (let ir = 0; ir < height; ir++) {

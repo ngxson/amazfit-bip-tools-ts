@@ -1,4 +1,4 @@
-import { packUint32LE, parseString, parseUint32LE } from './res-utils';
+import { md5Hash, packUint32LE, parseString, parseUint32LE } from './res-utils';
 
 export class ResAsset {
   data: Uint8Array;
@@ -7,14 +7,25 @@ export class ResAsset {
     this.data = buf;
   }
 
-  type(): 'bm' | 'elf' | 'libbip' | 'unknown' {
+  type(): 'bm' | 'elf' | 'libbip' | 'lang' | 'unknown' {
     const magicBM = parseString(this.data, 0, 2);
+    const magicALI = parseString(this.data, 0, 3);
     const magicELF = parseString(this.data, 1, 4);
     const magicLIBBIP = parseString(this.data, 0, 6);
     if (magicBM === 'BM') return 'bm';
+    if (magicALI === 'Ali') return 'lang'; // language file
     if (magicELF === 'ELF') return 'elf';
     if (magicLIBBIP === 'LIBBIP') return 'libbip';
     return 'unknown';
+  }
+
+  // calculate MD5 hash of the underlay buffer. useful for caching
+  hash(): string {
+    return md5Hash(this.data);
+  }
+
+  clone(): ResAsset {
+    return new ResAsset(new Uint8Array(this.data));
   }
 }
 
@@ -107,5 +118,9 @@ export class ResFile {
     }
 
     return bin;
+  }
+
+  clone(): ResFile {
+    return new ResFile(this.pack());
   }
 }

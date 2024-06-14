@@ -1,3 +1,5 @@
+import { md5 } from 'js-md5';
+
 //////////////////
 // Data utils
 
@@ -33,6 +35,12 @@ export function parseString(
   len: number
 ): string {
   return new TextDecoder().decode(buf.subarray(addr, addr + len));
+}
+
+export function md5Hash(data: Uint8Array): string {
+  const hash = md5.create();
+  hash.update(data);
+  return hash.hex();
 }
 
 //////////////////

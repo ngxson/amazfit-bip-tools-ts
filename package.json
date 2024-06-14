@@ -6,7 +6,6 @@
     "test": "bun run ./src/tests.ts"
   },
   "dependencies": {
-  },
-  "devDependencies": {
+    "js-md5": "^0.8.3"
   }
 }
